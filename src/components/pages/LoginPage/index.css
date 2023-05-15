@@ -1,0 +1,37 @@
+.div__form_login {
+  padding: 1em;
+  margin: auto;
+  border: 1px solid;
+  border-radius: 10px;
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+}
+
+.div__form_login h1 {
+  text-align: center;
+}
+
+.form__input {
+  margin: .5em;
+  padding: .5em;
+  font-size: 16px;
+}
+
+#form__btns {
+  padding: 1em;
+  display: flex;
+  justify-content: center;
+}
+.form__btn {
+  color: black;
+  text-decoration: none;
+  margin: .5em;
+  cursor: pointer;
+  border: 1px solid;
+  padding: 5px;
+  background: white;
+}
+.form__btn:hover {
+  background: whitesmoke;
+}
