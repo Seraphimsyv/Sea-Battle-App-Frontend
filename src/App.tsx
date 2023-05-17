@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HomePage } from './components/pages/HomePage';
+import { GamePage } from './components/pages/GamePage';
 import { LoginPage } from './components/pages/LoginPage';
 import { SigninPage } from './components/pages/SigninPage';
 
@@ -9,11 +10,11 @@ function App() {
   // eslint-disable-next-line
   const [jwtToken, setToken] = useState(localStorage.getItem('token') || undefined);
   // eslint-disable-next-line
-  const [profile, setProfile] = useState(JSON.stringify(localStorage.getItem('user')) || undefined);
+  const [profile, setProfile] = useState(localStorage.getItem('user') || undefined);
 
   const handleSaveToken = (token: string) => {
     const headers = {
-      'Authorization': `Bearer ${token}`,
+      'Authorization': `${token}`,
     }
     fetch('/api/account/profile', {
       headers: headers
@@ -47,6 +48,7 @@ function App() {
           <Route path='/' element={<HomePage />} />
           <Route path='/log-in' element={<LoginPage handleSave={handleSaveToken} />} />
           <Route path='/sign-in' element={<SigninPage />} />
+          <Route path='/game' element={<GamePage />} />
         </Routes>
       </Router>
     </>

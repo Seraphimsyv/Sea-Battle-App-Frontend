@@ -37,7 +37,7 @@ export const LoginPage = ({ handleSave }: ILoginPageProps) => {
     .then(res => res.json())
     .then(res => {
       if (res?.statusCode) {
-        console.log(res);
+        alert(res.message)
       } else {
         handleSave(res.access_token);
       }
