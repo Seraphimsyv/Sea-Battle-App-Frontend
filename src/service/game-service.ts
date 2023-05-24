@@ -1,31 +1,78 @@
-type Ship = {
-  status: 1 | 0;
+export type TypeShip = {
   col: number;
   row: number;
 }
 
 export class GameService {
-  public readonly ships : Ship[] = [];
-
-  addShip(ship: Ship) : boolean {
-
-    this.ships.forEach(el => {
+  public static readonly ships : TypeShip[] = [];
+  /**
+   * 
+   * @param ship 
+   */
+  static delShip(ship: TypeShip) : void {
+    
+    for (let i = 0; i < this.ships.length; i++) {
       if (
-          el.col === ship.col ||
-          el.col === ship.col + 1 ||
-          el.col === ship.col - 1
-      ) {
-        return false;
-      }
+        this.ships[i].col === ship.col &&
+        this.ships[i].row === ship.row
+      ) this.ships.splice(i, 1);
+    }
+  }
+  /**
+   * 
+   * @param ship 
+   * @returns 
+   */
+  static addShip(ship: TypeShip, test?: boolean) : boolean {
 
-      if (
-        el.row === ship.row ||
-        el.row === ship.row + 1 ||
-        el.row === ship.row - 1
-      ) {
-        return false;
+    if (this.ships.length > 0) {
+      
+      for (let i = 0; i < this.ships.length; i++) {
+        if (
+          this.ships[i].col - 1 === ship.col &&
+          this.ships[i].row + 1 === ship.row 
+        ) return false;
+
+        if (
+          this.ships[i].col + 1 === ship.col &&
+          this.ships[i].row - 1 === ship.row 
+        ) return false;
+
+        if (
+          this.ships[i].col + 1 === ship.col &&
+          this.ships[i].row + 1 === ship.row 
+        ) return false;
+
+        if (
+          this.ships[i].col + 1 === ship.col &&
+          this.ships[i].row === ship.row 
+        ) return false;
+
+        if (
+          this.ships[i].col === ship.col &&
+          this.ships[i].row + 1 === ship.row 
+        ) return false;
+
+        if (
+          this.ships[i].col - 1 === ship.col &&
+          this.ships[i].row - 1 === ship.row 
+        ) return false;
+
+        if (
+          this.ships[i].col - 1 === ship.col &&
+          this.ships[i].row === ship.row 
+        ) return false;
+
+        if (
+          this.ships[i].col === ship.col &&
+          this.ships[i].row - 1 === ship.row 
+        ) return false;
       }
-    })
+    }
+
+    if (test === undefined || test === false) {
+      this.ships.push(ship);
+    }
 
     return true;
   }

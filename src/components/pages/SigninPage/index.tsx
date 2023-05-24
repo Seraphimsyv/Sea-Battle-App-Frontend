@@ -1,7 +1,14 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { TemplateAuthPage } from '../TemplateAuthPage';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
 
 export const SigninPage = () => {
   const [username, setUsername] = useState('');
@@ -11,27 +18,27 @@ export const SigninPage = () => {
    * 
    * @param evt 
    */
-  const handleChangeUsername = (evt: React.FormEvent<HTMLInputElement>) : void => {
+  const handleChangeUsername = (evt: any) : void => {
     setUsername(evt.currentTarget.value);
   }
   /**
    * 
    * @param evt 
    */
-  const handleChangeLogin = (evt: React.FormEvent<HTMLInputElement>) : void => {
+  const handleChangeLogin = (evt: any) : void => {
     setLogin(evt.currentTarget.value);
   }
   /**
    * 
    * @param evt 
    */
-  const handleChangePassword = (evt: React.FormEvent<HTMLInputElement>) : void => {
+  const handleChangePassword = (evt: any) : void => {
     setPassword(evt.currentTarget.value);
   }
   /**
    * 
    */
-  const handleSignin = () => {
+  const handleRegistartion = () => {
     fetch('/api/auth/sign-in', {
       method: "POST",
       headers: { 'Content-Type': 'application/json' },
@@ -49,18 +56,68 @@ export const SigninPage = () => {
 
   return (
     <>
-      <TemplateAuthPage>
-        <div className='div__form_login'>
-          <h1>Sign-in</h1>
-          <input className='form__input' id="form__input_username" type='text' value={username} placeholder='Username' onChange={handleChangeUsername} />
-          <input className='form__input' id="form__input_login" type='text' value={login} placeholder='Login' onChange={handleChangeLogin} />
-          <input className='form__input' id="form__input_pass" type='password' value={password} placeholder='Password' onChange={handleChangePassword} />
-          <div id="form__btns">
-            <input className='form__btn' id="form__input_submit" type='button' value='Sign-in' onClick={handleSignin} />
-            <Link className='form__btn' to="/log-in">Log-in</Link>
-          </div>
-        </div>
-      </TemplateAuthPage>
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Box sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="username"
+              label="Username"
+              autoFocus
+              onChange={handleChangeUsername}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="login"
+              label="Login"
+              autoFocus
+              onChange={handleChangeLogin}
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              onChange={handleChangePassword}
+            />
+            <Button
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={handleRegistartion}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              <Grid item>
+                <Link href="/log-in" variant="body2">
+                  {"Already have an account?"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
     </>
   )
 }

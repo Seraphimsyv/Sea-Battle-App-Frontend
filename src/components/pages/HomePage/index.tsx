@@ -1,65 +1,131 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { TemplatePage } from '../TemplatePage';
 
-interface IMainProps {
-  callbackSetCreate: () => void,
-  callbackSetConnect: () => void,
-  callbackLogout: () => void
-}
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import CableIcon from '@mui/icons-material/Cable';
+import LogoutIcon from '@mui/icons-material/Logout';
+
+import { TemplatePage } from '../../TemplatePage';
+import {
+  IMainProps,
+  ICreateProps,
+  IConnectProps
+} from '../../../props/menu.props';
 
 const MainWindow : React.FC<IMainProps> = (props: IMainProps) => {
   return (
     <>
-      <button onClick={props.callbackSetCreate}>Create game</button>
-      <button onClick={props.callbackSetConnect}>Connect game</button>
-      <button onClick={props.callbackLogout}>Log-out</button>
+      <Stack direction="column" spacing={4}>
+        <Button variant="outlined" startIcon={<AddCircleOutlineIcon />} onClick={props.callbackSetCreate}>
+          Create game
+        </Button>
+        <Button variant="outlined" startIcon={<CableIcon />} onClick={props.callbackSetConnect}>
+          Connect to game
+        </Button>
+        <Button variant="outlined" startIcon={<LogoutIcon />} onClick={props.callbackLogout}>
+          Log out
+        </Button>
+      </Stack>
     </>
   )
-}
-
-interface ICreateProps {
-  callbackClose: () => void
 }
 
 const CreateWindow : React.FC<ICreateProps> = (props: ICreateProps) => {
   const [value, setValue] = useState("");
-
-  const handleSetValue = (evt: React.FormEvent<HTMLInputElement>) => {
+  /**
+   * 
+   */
+  const handleSetValue = (evt: any) => {
     setValue(evt.currentTarget.value);
+  }
+  /**
+   * 
+   */
+  const handleCreateGame = () => {
+    fetch('/api/game/create', {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ method: 'create', token: `${localStorage.getItem('token')}`, password: value })
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.status) {
+        localStorage.setItem('password', value);
+        window.location.href = '/game';
+      } else {
+        alert('Game with this password, already exists!');
+      }
+    });
   }
 
   return (
     <>
-      <input type="text" onChange={handleSetValue} />
-      <input type="submit" value="Create" onClick={() => {
-        localStorage.setItem('password', value);
-        window.location.href = '/game'
-      }} />
-      <input type="button" value="Close" onClick={props.callbackClose} />
+      <Stack direction="column" spacing={4} sx={{ margin: 'auto' }}>
+        <TextField
+          required
+          label="Password"
+          autoFocus
+          onChange={handleSetValue} 
+        />
+        <Button variant="outlined" onClick={handleCreateGame}>
+          Create
+        </Button>
+        <Button variant="outlined" onClick={props.callbackClose}>
+          Close
+        </Button>
+      </Stack>
     </>
   )
 }
 
-interface IConnectProps {
-  callbackClose: () => void
-}
-
 const ConnectWindow : React.FC<IConnectProps> = (props: IConnectProps) => {
   const [value, setValue] = useState("");
-
-  const handleSetValue = (evt: React.FormEvent<HTMLInputElement>) => {
+  /**
+   * 
+   * @param evt 
+   */
+  const handleSetValue = (evt: any) => {
     setValue(evt.currentTarget.value);
+  }
+  /**
+   * 
+   */
+  const handleConnectToGame = () => {
+    fetch('/api/game/check-exists', {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ method: 'connect', token: `${localStorage.getItem('token')}`, password: value })
+    })
+    .then(res => res.json())
+    .then(res => {
+      if (res.status) {
+        localStorage.setItem('password', value);
+        window.location.href = '/game';
+      } else {
+        alert('Game with this password, not exists!');
+      }
+    });
   }
 
   return (
     <>
-      <input type="text" onChange={handleSetValue} />
-      <input type="submit" value="Connect" onClick={() => {
-        localStorage.setItem('password', value);
-        window.location.href = '/game'
-      }} />
-      <input type="button" value="Close" onClick={props.callbackClose} />
+      <Stack direction="column" spacing={4} sx={{ margin: 'auto' }}>
+        <TextField
+          required
+          label="Password"
+          autoFocus
+          onChange={handleSetValue} 
+        />
+        <Button variant="outlined" onClick={handleConnectToGame}>
+          Connect
+        </Button>
+        <Button variant="outlined" onClick={props.callbackClose}>
+          Close
+        </Button>
+      </Stack>
     </>
   )
 }
@@ -70,9 +136,9 @@ export const HomePage  = () => {
   return (
     <>
       <TemplatePage>
-        <div className='div__menu'>
-          {currentWindow === 0 ? <>
-            <MainWindow 
+        {currentWindow === 0 ? (
+          <>
+            <MainWindow
               callbackSetCreate={() => setWindow(1)}
               callbackSetConnect={() => setWindow(2)}
               callbackLogout={() => {
@@ -80,17 +146,20 @@ export const HomePage  = () => {
                 window.location.href = '/log-in';
               }}
             />
-          </> : currentWindow === 1 ? <>
+          </>
+        ) : currentWindow === 1 ? (
+          <>
             <CreateWindow
               callbackClose={() => setWindow(0)}
             />
-          </> : currentWindow === 4 ? <>
-          </> : <>
+          </>
+        ) : (
+          <>
             <ConnectWindow
               callbackClose={() => setWindow(0)}
             />
-          </>}
-        </div>
+          </>
+        )}
       </TemplatePage>
     </>
   )

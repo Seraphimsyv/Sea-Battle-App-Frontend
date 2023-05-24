@@ -5,6 +5,7 @@ import { HomePage } from './components/pages/HomePage';
 import { GamePage } from './components/pages/GamePage';
 import { LoginPage } from './components/pages/LoginPage';
 import { SigninPage } from './components/pages/SigninPage';
+import './index.css';
 
 function App() {
   // eslint-disable-next-line
