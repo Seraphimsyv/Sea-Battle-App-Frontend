@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { HomePage } from './components/pages/HomePage';
 import { GamePage } from './components/pages/GamePage';
+import { StatisticPage } from './components/pages/StatisticPage';
 import { LoginPage } from './components/pages/LoginPage';
 import { SigninPage } from './components/pages/SigninPage';
 import './index.css';
@@ -50,6 +51,7 @@ function App() {
           <Route path='/log-in' element={<LoginPage handleSave={handleSaveToken} />} />
           <Route path='/sign-in' element={<SigninPage />} />
           <Route path='/game' element={<GamePage />} />
+          <Route path='/statistic' element={<StatisticPage />} />
         </Routes>
       </Router>
     </>

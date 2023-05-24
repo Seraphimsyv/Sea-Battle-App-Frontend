@@ -1,13 +1,12 @@
 import * as React from 'react';
 import { useState } from 'react';
-
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import CableIcon from '@mui/icons-material/Cable';
 import LogoutIcon from '@mui/icons-material/Logout';
-
+import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import { TemplatePage } from '../../TemplatePage';
 import {
   IMainProps,
@@ -24,6 +23,9 @@ const MainWindow : React.FC<IMainProps> = (props: IMainProps) => {
         </Button>
         <Button variant="outlined" startIcon={<CableIcon />} onClick={props.callbackSetConnect}>
           Connect to game
+        </Button>
+        <Button variant="outlined" startIcon={<LeaderboardIcon />} onClick={() => window.location.href = '/statistic'}>
+          Statisticboard
         </Button>
         <Button variant="outlined" startIcon={<LogoutIcon />} onClick={props.callbackLogout}>
           Log out
