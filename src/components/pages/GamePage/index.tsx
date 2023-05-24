@@ -34,6 +34,19 @@ export const GamePage = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   /**
    * 
+   */
+  const handleLeaveGame = () => {
+    fetch('/api/game/leave', {
+      method: 'POST',
+      body: JSON.stringify({
+        token: token,
+        password: password
+      })
+    })
+    .then(res => window.location.href = '/');
+  }
+  /**
+   * 
    * @param message 
    */
   const handleSendMessage = (message: string) => {
@@ -203,6 +216,7 @@ export const GamePage = () => {
               gameStatus={gameStatus}
               opponentStatus={opponentStatus}
               callbackSetReady={handleCompletePlayground}
+              callbackLeaveGame={handleLeaveGame}
             />
             <OpponentBoard
               gameStatus={gameStatus}

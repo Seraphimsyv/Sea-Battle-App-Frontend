@@ -1,5 +1,7 @@
 import { Stack } from '@mui/system';
 import { Button } from '@mui/material';
+import ExpandCircleDownIcon from '@mui/icons-material/ExpandCircleDown';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { GameMenuProps as PropsTypes } from '../../../../props/game.props';
 import {
   EnumGameStatus
@@ -15,6 +17,7 @@ export const Menu = (props: PropsTypes) => {
               <Button
                 variant="contained"
                 onClick={props.callbackSetReady}
+                endIcon={<ExpandCircleDownIcon />}
               >
                 Ready
               </Button>
@@ -23,6 +26,13 @@ export const Menu = (props: PropsTypes) => {
           {props.gameStatus?.status === EnumGameStatus.FINISHED ? (
             <>
               <h3>Winner - {props.gameStatus.winner}</h3>
+              <Button
+                variant="contained"
+                onClick={props.callbackLeaveGame}
+                endIcon={<LogoutIcon />}
+              >
+                Leave game
+              </Button>
             </>
           ) : <></>}
           {props.gameStatus?.status === EnumGameStatus.PROCESSING ? (

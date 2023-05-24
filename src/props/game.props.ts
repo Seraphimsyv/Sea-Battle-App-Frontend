@@ -17,7 +17,8 @@ export type GameHeaderProps = {
 export type GameMenuProps = {
   gameStatus?: GameStatus,
   opponentStatus?: OpponentStatus,
-  callbackSetReady: () => void
+  callbackSetReady: () => void,
+  callbackLeaveGame: () => void
 }
 
 export type GameChatProps = {
