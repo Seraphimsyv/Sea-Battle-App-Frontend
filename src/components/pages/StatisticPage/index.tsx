@@ -58,6 +58,9 @@ export const StatisticPage = () => {
         <Button
           variant='contained'
           startIcon={<ReplyIcon />}
+          onClick={() => {
+            window.location.href = '/';
+          }}
         >
           Back to Home
         </Button>
