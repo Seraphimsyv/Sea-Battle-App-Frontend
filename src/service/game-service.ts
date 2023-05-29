@@ -6,7 +6,7 @@ export type TypeShip = {
 export class GameService {
   public static readonly ships : TypeShip[] = [];
   /**
-   * 
+   * Deleting a Ship object from the list
    * @param ship 
    */
   static delShip(ship: TypeShip) : void {
@@ -19,7 +19,7 @@ export class GameService {
     }
   }
   /**
-   * 
+   * Adding a Ship object to the list
    * @param ship 
    * @returns 
    */

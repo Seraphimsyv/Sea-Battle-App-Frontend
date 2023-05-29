@@ -6,7 +6,7 @@ import { EnumGameStatus } from '../../../../enum';
 
 export const OpponentGrid = (props: PropsTypes) => {
   /**
-   * 
+   * Canvas miss rendering handler
    */
   const DrawMissedShot = () => {
     const canvas = props.canvasRef.current;
@@ -23,7 +23,7 @@ export const OpponentGrid = (props: PropsTypes) => {
     })
   }
   /**
-   * 
+   * Canvas handler for rendering destroyed ships
    */
   const DrawDestroyedShips = () => {
     const canvas = props.canvasRef.current;
@@ -40,7 +40,7 @@ export const OpponentGrid = (props: PropsTypes) => {
     })
   }
   /**
-   * 
+   * Canvas cleanup handler
    */
   const DrawClearGrid = () => {
     const canvas = props.canvasRef.current;
@@ -66,9 +66,8 @@ export const OpponentGrid = (props: PropsTypes) => {
     DrawDestroyedShips();
   }
   /**
-   * 
+   * Mouse movement handler on canvas
    * @param event 
-   * @returns 
    */
   const handleMouseMove = (event: React.MouseEvent<HTMLCanvasElement>) => {
     DrawClearGrid();
@@ -92,7 +91,7 @@ export const OpponentGrid = (props: PropsTypes) => {
     context.fillRect(col * CELL_SIZE, row * CELL_SIZE, CELL_SIZE, CELL_SIZE);
   };
   /**
-   * 
+   * Mouse click handler on canvas
    * @param event 
    */
   const handleOnClick = (event: React.MouseEvent<HTMLCanvasElement>) => {
@@ -110,7 +109,7 @@ export const OpponentGrid = (props: PropsTypes) => {
     props.callbackCheckShot({ x: col, y: row });
   }
   /**
-   * 
+   * Canvas cleaning hook
    */
   useEffect(() => {
     DrawClearGrid();

@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-const gameSocket = io('', { path: "/api/ws/game" });
-gameSocket.disconnect();
+const socket = io('', { path: "/api/ws/game" });
+socket.disconnect();
 
-export default gameSocket;
+export default socket;

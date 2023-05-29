@@ -1,17 +1,8 @@
 import * as React from 'react';
-
+import { GameShipProps as PropsTypes } from '../../../../props/game.props';
 import { CELL_SIZE } from '../../../../constants';
 
-interface IProps {
-  callbackDragStart: (event: React.DragEvent<HTMLDivElement>) => void;
-  callbackDragEnd: () => void;
-}
-/**
- * 
- * @param props 
- * @returns 
- */
-export const PlayerShip = (props: IProps) => {
+export const PlayerShip = (props: PropsTypes) => {
   return (
     <>
       <div

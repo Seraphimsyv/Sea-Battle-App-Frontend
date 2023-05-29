@@ -38,13 +38,13 @@ const MainWindow : React.FC<IMainProps> = (props: IMainProps) => {
 const CreateWindow : React.FC<ICreateProps> = (props: ICreateProps) => {
   const [value, setValue] = useState("");
   /**
-   * 
+   * User input save handler for create game password
    */
   const handleSetValue = (evt: any) => {
     setValue(evt.currentTarget.value);
   }
   /**
-   * 
+   * Game creation handler
    */
   const handleCreateGame = () => {
     fetch('/api/game/create', {
@@ -86,14 +86,14 @@ const CreateWindow : React.FC<ICreateProps> = (props: ICreateProps) => {
 const ConnectWindow : React.FC<IConnectProps> = (props: IConnectProps) => {
   const [value, setValue] = useState("");
   /**
-   * 
+   * User input save handler for connection game password
    * @param evt 
    */
   const handleSetValue = (evt: any) => {
     setValue(evt.currentTarget.value);
   }
   /**
-   * 
+   * Game connection handler
    */
   const handleConnectToGame = () => {
     fetch('/api/game/check-exists', {

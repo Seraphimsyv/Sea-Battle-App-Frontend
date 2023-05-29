@@ -10,7 +10,9 @@ import {
 
 export const Header = (props: PropsTypes) => {
   const [username, setUsername] = useState('');
-
+  /**
+   * Username setting hook
+   */
   useEffect(() => {
     setUsername(JSON.parse(localStorage.getItem('user') || '')['username'])
   }, [])

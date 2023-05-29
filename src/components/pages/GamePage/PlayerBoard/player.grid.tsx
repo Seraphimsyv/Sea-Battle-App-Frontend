@@ -3,14 +3,9 @@ import { useEffect } from 'react';
 import { PlayerGridProps as PropsTypes } from '../../../../props/player.props';
 import { CELL_SIZE, CANVAS } from '../../../../constants';
 
-/**
- * 
- * @param props 
- * @returns 
- */
 export const PlayerGrid = (props: PropsTypes) => {
   /**
-   * 
+   * Ship rendering canvas handler
    */
   const DrawShips = () => {
     const canvas = props.canvasRef.current;
@@ -27,7 +22,7 @@ export const PlayerGrid = (props: PropsTypes) => {
     })
   }
   /**
-   * 
+   * Non-hit rendering canvas handler
    */
   const DrawMissedShot = () => {
     const canvas = props.canvasRef.current;
@@ -44,7 +39,7 @@ export const PlayerGrid = (props: PropsTypes) => {
     })
   }
   /**
-   * 
+   * Destroyed rendering canvas handler
    */
   const DrawDestroyedShips = () => {
     const canvas = props.canvasRef.current;
@@ -61,7 +56,7 @@ export const PlayerGrid = (props: PropsTypes) => {
     })
   }
   /**
-   * 
+   * Hook for drawing canvas
    */
   useEffect(() => {
     const canvas = props.canvasRef.current;

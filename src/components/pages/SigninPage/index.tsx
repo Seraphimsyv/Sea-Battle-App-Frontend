@@ -15,28 +15,28 @@ export const SigninPage = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   /**
-   * 
+   * User input save handler for username field
    * @param evt 
    */
   const handleChangeUsername = (evt: any) : void => {
     setUsername(evt.currentTarget.value);
   }
   /**
-   * 
+   * User input save handler for login field
    * @param evt 
    */
   const handleChangeLogin = (evt: any) : void => {
     setLogin(evt.currentTarget.value);
   }
   /**
-   * 
+   * User input save handler for password field
    * @param evt 
    */
   const handleChangePassword = (evt: any) : void => {
     setPassword(evt.currentTarget.value);
   }
   /**
-   * 
+   * User registration handler
    */
   const handleRegistartion = () => {
     fetch('/api/auth/sign-in', {

@@ -16,21 +16,21 @@ export const LoginPage = ({ handleSave }: IProps) => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   /**
-   * 
+   * User input save handler for login field
    * @param evt 
    */
   const handleChangeLogin = (evt: any) : void => {
     setLogin(evt.currentTarget.value);
   }
   /**
-   * 
+   * User input save handler for password field
    * @param evt 
    */
   const handleChangePassword = (evt: any) : void => {
     setPassword(evt.currentTarget.value);
   }
   /**
-   * 
+   * User authorization handler
    */
   const handleAuth = () => {
     fetch('/api/auth/log-in', {

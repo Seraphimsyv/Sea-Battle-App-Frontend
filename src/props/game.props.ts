@@ -25,3 +25,8 @@ export type GameChatProps = {
   messageList: Message[],
   callbackSendMessage: (message: string) => void
 }
+
+export type GameShipProps = {
+  callbackDragStart: (event: React.DragEvent<HTMLDivElement>) => void;
+  callbackDragEnd: () => void;
+}

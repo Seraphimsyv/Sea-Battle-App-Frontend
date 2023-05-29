@@ -33,7 +33,9 @@ export const StatisticPage = () => {
   const [token] = useState(localStorage.getItem('token') || undefined);
   const [playerStat, setPlayerStat] = useState<PlayerStatistic | undefined>(undefined);
   const [gamesHistory, setHistory] = useState<HistoryGames>([]);
-
+  /**
+   * User stats and game history query hook
+   */
   useEffect(() => {
     if (token !== undefined) {
       fetch('/api/game/statistic', {
@@ -48,9 +50,6 @@ export const StatisticPage = () => {
       });
     }
   }, [token])
-
-  console.log(playerStat);
-  console.log(gamesHistory);
 
   return (
     <>
@@ -100,8 +99,8 @@ export const StatisticPage = () => {
                     <TableCell>{history.loserPlayer}</TableCell>
                     <TableCell>{history.loserPoints}</TableCell>
                     <TableCell>{history.steps}</TableCell>
-                    <TableCell>{history.createdAt.toString()}</TableCell>
-                    <TableCell>{history.finishedAt.toString()}</TableCell>
+                    <TableCell>{history.createdAt.toLocaleString()}</TableCell>
+                    <TableCell>{history.finishedAt.toLocaleString()}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

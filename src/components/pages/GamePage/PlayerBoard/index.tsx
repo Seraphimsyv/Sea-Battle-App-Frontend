@@ -5,9 +5,6 @@ import { PlayerShip } from './player.ship';
 import { GameService } from '../../../../service/game-service';
 import { PlayerBoardProps as PropsTypes } from '../../../../props/player.props';
 import {
-
-} from '../../../../types';
-import {
   EnumGameStatus
 } from '../../../../enum';
 import { CELL_SIZE, MAX_SHIP, CANVAS } from '../../../../constants';
@@ -18,7 +15,7 @@ export const PlayerBoard = (props: PropsTypes) => {
   const [isDragging, setIsDragging] = useState(false);
   const [draggedElement, setDraggedElement] = useState<HTMLDivElement | null>(null);
   /**
-   * 
+   * Canvas handler during drag
    * @param event 
    */
   const handleDragStart = (event: React.DragEvent<HTMLDivElement>) => {
@@ -39,14 +36,14 @@ export const PlayerBoard = (props: PropsTypes) => {
     setDraggedElement(target);
   };
   /**
-   * 
+   * Drag End Canvas Handler
    */
   const handleDragEnd = () => {
     setIsDragging(false);
     setDraggedElement(null);
   }
   /**
-   * 
+   * Drag start handler on canvas
    * @param event 
    */
   const handleDragEnter = (event: React.DragEvent<HTMLCanvasElement>) => {
@@ -55,7 +52,7 @@ export const PlayerBoard = (props: PropsTypes) => {
     event.currentTarget.style.background = CANVAS.general.background;
   };
   /**
-   * 
+   * Drag end handler on canvas
    * @param event 
    */
   const handleDragOver = (event: React.DragEvent<HTMLCanvasElement>) => {
@@ -77,7 +74,7 @@ export const PlayerBoard = (props: PropsTypes) => {
     }
   };
   /**
-   * 
+   * Drag handler exit canvas
    * @param event 
    */
   const handleDragLeave = (event: React.DragEvent<HTMLCanvasElement>) => {
@@ -85,9 +82,8 @@ export const PlayerBoard = (props: PropsTypes) => {
     event.currentTarget.style.background = CANVAS.general.background;
   };
   /**
-   * 
+   * Drop handler
    * @param event 
-   * @returns 
    */
   const handleDrop = (event: React.DragEvent<HTMLCanvasElement>) => {
     event.preventDefault();

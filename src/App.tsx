@@ -13,8 +13,11 @@ function App() {
   const [jwtToken, setToken] = useState(localStorage.getItem('token') || undefined);
   // eslint-disable-next-line
   const [profile, setProfile] = useState(localStorage.getItem('user') || undefined);
-
-  const handleSaveToken = (token: string) => {
+  /**
+   * User authorization handler
+   * @param token 
+   */
+  const hanldeAuthorization = (token: string) => {
     const headers = {
       'Authorization': `${token}`,
     }
@@ -30,7 +33,9 @@ function App() {
     })
     .then(() => window.location.href='/');
   }
-
+  /**
+   * Authorization Check Hook
+   */
   useEffect(() => {
     if (localStorage.getItem('user') !== null) {
       if (['/log-in', '/sign-in'].includes(window.location.pathname)) {
@@ -48,7 +53,7 @@ function App() {
       <Router>
         <Routes>
           <Route path='/' element={<HomePage />} />
-          <Route path='/log-in' element={<LoginPage handleSave={handleSaveToken} />} />
+          <Route path='/log-in' element={<LoginPage handleSave={hanldeAuthorization} />} />
           <Route path='/sign-in' element={<SigninPage />} />
           <Route path='/game' element={<GamePage />} />
           <Route path='/statistic' element={<StatisticPage />} />

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Stack from '@mui/material/Stack';
-import gameSocket from '../../../sockets/ws';
+import socket from '../../../sockets/ws';
 import { GameService } from '../../../service/game-service';
 import { TemplatePage } from '../../TemplatePage';
 import { Loader } from '../../Loader';
@@ -33,7 +33,7 @@ export const GamePage = () => {
   const [opponentStatus, setOpponentStatus] = useState<OpponentStatus | undefined>(undefined);
   const [messages, setMessages] = useState<Message[]>([]);
   /**
-   * 
+   * Player exit handler
    */
   const handleLeaveGame = () => {
     fetch('/api/game/leave', {
@@ -46,7 +46,7 @@ export const GamePage = () => {
     .then(res => window.location.href = '/');
   }
   /**
-   * 
+   * Chat message send handler
    * @param message 
    */
   const handleSendMessage = (message: string) => {
@@ -68,7 +68,7 @@ export const GamePage = () => {
     }
   }
   /**
-   * 
+   * User ship loading handler
    * @param ship 
    */
   const handleUploadShips = (point: { x: number, y: number }) => {
@@ -79,10 +79,9 @@ export const GamePage = () => {
     });
   }
   /**
-   * 
+   * Shot validation handler
    * @param point 
    */
-  // eslint-disable-next-line
   const handleCheckShot = (point: { x: number, y: number }) => {
     if (!gameStatus) return;
 
@@ -102,7 +101,7 @@ export const GamePage = () => {
     });
   }
   /**
-   * 
+   * Player readiness handler
    */
   const handleCompletePlayground = () => {
     if (!gameStatus) return;
@@ -128,7 +127,7 @@ export const GamePage = () => {
     });
   }
   /**
-   * 
+   * Socket Event Hook
    */
   useEffect(() => {
     if (token === undefined) {
@@ -138,46 +137,46 @@ export const GamePage = () => {
       window.location.href = '/';
     }
 
-    gameSocket.connect();
+    socket.connect();
 
-    gameSocket.on('connect', () => {
-      gameSocket.emit('game:connect', { token: token, password: password });
+    socket.on('connect', () => {
+      socket.emit('game:connect', { token: token, password: password });
     })
 
-    gameSocket.on('response:game:event-turn', (evt) => {
+    socket.on('response:game:event-turn', (evt) => {
       setGameTurn(evt.turn);
     })
 
-    gameSocket.on('response:game:get-status', (evt) => {
+    socket.on('response:game:get-status', (evt) => {
       setGameStatus(evt);
     })
 
-    gameSocket.on('response:opponent:get-status', (evt) => {
+    socket.on('response:opponent:get-status', (evt) => {
       setOpponentStatus(evt);
     })
 
-    gameSocket.on('response:game:points', (evt) => {
+    socket.on('response:game:points', (evt) => {
       setPlayerPlaygroundPoints(evt.player);
       setOpponentPlaygroundPoints(evt.opponent);
     })
 
-    gameSocket.on('response:game-error-connect', (evt) => {
+    socket.on('response:game-error-connect', (evt) => {
       localStorage.removeItem('password');
       window.location.href = '/';
     });
 
-    gameSocket.on('response:player:points', (evt) => {
+    socket.on('response:player:points', (evt) => {
       setPlayerGamePoint(evt?.player);
       setOpponentGamePoint(evt?.opponent);
     });
 
-    gameSocket.on('response:messages', (evt) => {
+    socket.on('response:messages', (evt) => {
       setMessages(evt.messages);
     });
 
     return () => {
       localStorage.removeItem('password');
-      gameSocket.disconnect();
+      socket.disconnect();
     }
   }, [token, password]);
 

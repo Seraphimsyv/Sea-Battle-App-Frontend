@@ -13,13 +13,13 @@ import {
 export const Chat = (props: PropsTypes) => {
   const [value, setValue] = useState('');
   /**
-   * 
+   * Message Field Data Save Handler
    */
   const handleSetValue = (evt: any) => {
     setValue(evt.currentTarget.value);
   }
   /**
-   * 
+   * Handler for sending message and clearing input
    */
   const handleSendMessage = () => {
     setValue('');
