@@ -1,43 +1,33 @@
-import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { HomePage } from './components/pages/HomePage';
-import { GamePage } from './components/pages/GamePage';
-import { StatisticPage } from './components/pages/StatisticPage';
-import { LoginPage } from './components/pages/LoginPage';
-import { SigninPage } from './components/pages/SigninPage';
+import AlertComponent from './components/AlertComponent';
+import LoginPage from './pages/LoginPage';
+import SigninPage from './pages/SigninPage';
+import HomePage from './pages/HomePage';
+import GamePage from './pages/GamePage';
+
+import {
+  AlertProvider,
+  useAlerts
+} from './manager/alert-manager';
 import './index.css';
 
-function App() {
-  // eslint-disable-next-line
-  const [jwtToken, setToken] = useState(localStorage.getItem('token') || undefined);
-  // eslint-disable-next-line
-  const [profile, setProfile] = useState(localStorage.getItem('user') || undefined);
+const AppRouter = ()  => {
+  const { alerts, remAlert } = useAlerts();
+  const [jwtToken] = useState(localStorage.getItem('token') || undefined);
   /**
    * User authorization handler
    * @param token 
    */
   const hanldeAuthorization = (token: string) => {
-    const headers = {
-      'Authorization': `${token}`,
-    }
-    fetch('/api/account/profile', {
-      headers: headers
-    })
-    .then(res => res.json())
-    .then(data => {
-      localStorage.setItem('user', JSON.stringify(data));
-      localStorage.setItem('token', token);
-      setProfile(data);
-      setToken(token)
-    })
-    .then(() => window.location.href='/');
+    localStorage.setItem('token', token);
+    window.location.href='/';
   }
   /**
    * Authorization Check Hook
    */
   useEffect(() => {
-    if (localStorage.getItem('user') !== null) {
+    if (jwtToken) {
       if (['/log-in', '/sign-in'].includes(window.location.pathname)) {
         window.location.href = '/';
       }
@@ -46,7 +36,14 @@ function App() {
         window.location.href = '/log-in';
       }
     }
-  }, [])
+  }, [jwtToken])
+  /**
+   * 
+   * @param id 
+   */
+  const handleRemoveAlert = (id: string) => {
+    remAlert(id);
+  }
 
   return (
     <>
@@ -55,12 +52,30 @@ function App() {
           <Route path='/' element={<HomePage />} />
           <Route path='/log-in' element={<LoginPage handleSave={hanldeAuthorization} />} />
           <Route path='/sign-in' element={<SigninPage />} />
-          <Route path='/game' element={<GamePage />} />
-          <Route path='/statistic' element={<StatisticPage />} />
+          <Route path='/game/:gameId' element={<GamePage />} />
         </Routes>
       </Router>
+      <div id="alerts">
+        {alerts.map((alert, key) => (
+          <AlertComponent
+            key={key}
+            id={alert.id}
+            variant={alert.variant}
+            message={alert.message}
+            callbackClose={handleRemoveAlert}
+          />
+        ))}
+      </div>
     </>
   );
+}
+
+const App = () => {
+  return (
+    <AlertProvider>
+      <AppRouter />
+    </AlertProvider>
+  )
 }
 
 export default App;

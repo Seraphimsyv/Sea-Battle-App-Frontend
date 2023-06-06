@@ -12,6 +12,12 @@ body {
   flex-direction: column;
 }
 
+#alert-root {
+  position: absolute;
+  bottom: .5%;
+  right: .5%;
+}
+
 /* CANVAS */
 
 #canvas__battlefield {
@@ -30,4 +36,19 @@ body {
   100% {
     background-position: 0% 50%;
   }
+}
+
+/* Alerts */
+@keyframes alerAnimation {
+  0% {
+    opacity: 100;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+#alert {
+  animation: 2s linear 3s alerAnimation;
+  animation-iteration-count: 1;
 }

@@ -1,32 +1,63 @@
-import {
-  Message,
-  GameStatus,
-  OpponentStatus
-} from '../types'
+import { GameInfo } from "../types/game.types";
 
-export type GameHeaderProps = {
-  gameStatus?: GameStatus,
-  opponentStatus?: OpponentStatus,
-  gameTurn?: number,
-  playersPoints: {
-    player: number,
-    opponent: number
-  }
-};
-
-export type GameMenuProps = {
-  gameStatus?: GameStatus,
-  opponentStatus?: OpponentStatus,
-  callbackSetReady: () => void,
-  callbackLeaveGame: () => void
+interface IPlaygroundProps {
+  canvasRef: React.RefObject<HTMLCanvasElement>;
+  width: number;
+  height: number;
+  cellSize: number;
 }
 
-export type GameChatProps = {
-  messageList: Message[],
-  callbackSendMessage: (message: string) => void
-}
-
-export type GameShipProps = {
-  callbackDragStart: (event: React.DragEvent<HTMLDivElement>) => void;
+export interface IPlayerPlaygroundProps extends IPlaygroundProps {
+  gameInfo?: GameInfo;
+  playerId?: number;
+  count: {
+    small: {
+      current: number;
+      default: number;
+    },
+    medium: {
+      current: number;
+      default: number;
+    },
+    large: {
+      current: number;
+      default: number;
+    },
+  };
+  callbackContextMenu: (evt: React.MouseEvent<HTMLCanvasElement>) => void;
+  callbackDragEnter: (evt: React.DragEvent<HTMLCanvasElement>) => void;
+  callbackDragOver: (evt: React.DragEvent<HTMLCanvasElement>) => void;
+  callbackDragLeave: (evt: React.DragEvent<HTMLCanvasElement>) => void;
+  callbackOnDrop: (evt: React.DragEvent<HTMLCanvasElement>) => void;
+  callbackDragStart: (shipSize: number, evt: React.DragEvent<HTMLDivElement>) => void;
   callbackDragEnd: () => void;
+}
+
+export interface IOpponentPlaygroundProps extends IPlaygroundProps {
+  onClick: (evt: React.MouseEvent<HTMLCanvasElement>) => void;
+}
+
+export interface IShipProps {
+  count: {
+    small: {
+      current: number;
+      default: number;
+    },
+    medium: {
+      current: number;
+      default: number;
+    },
+    large: {
+      current: number;
+      default: number;
+    },
+  };
+  cellSize: number;
+  callbackDragStart: (shipSize: number, evt: React.DragEvent<HTMLDivElement>) => void;
+  callbackDragEnd: () => void;
+}
+
+export interface IInfoPanelProps {
+  gameInfo: GameInfo;
+  callbackPlayerStatus: () => void;
 }
