@@ -1,6 +1,26 @@
-# Getting Started with Create React App
+# Project "Sea Battle" - Frontend
+### This repository contains the front-end part of the "Sea battle" project. It is implemented in TypeScript using React.js.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Installation
+
+Make sure you have Node.js installed (version 12 or higher is recommended).
+Clone the repository to your local machine.
+Navigate to the root directory of the project and install the dependencies by running the following command
+
+```bash
+$ npm install
+```
+
+## Configuration
+
+Open the package.json file and locate the "proxy" property. Update its value to match the address of your backend server.
+For example, if your backend server is running at http://server/test, set the proxy as follows:
+
+"proxy": "http://server/test"
+
+If you plan to run the front-end and backend applications on the same server, set the proxy as follows, assuming the backend is running on port 3006:
+
+"proxy": "http://localhost:3006"
 
 ## Available Scripts
 
@@ -38,9 +58,3 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).

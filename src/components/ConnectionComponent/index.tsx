@@ -6,10 +6,9 @@ import {
   GridRenderCellParams,
   GridTreeNodeWithRender
 } from '@mui/x-data-grid';
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-
-import { GameService } from '../../service/game-service';
+import Button from '@mui/material/Button';
+import GameService from '../../service/game-service';
 import { AlertContext } from '../../manager/alert-manager';
 import { EnumAlertType } from '../../enum/main.enum';
 

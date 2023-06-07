@@ -2,15 +2,18 @@ import {
   useState,
   useContext
 } from 'react';
-import { FormGroup, FormLabel, FormControlLabel } from '@mui/material';
+import { 
+  FormControlLabel,
+  FormGroup, 
+  FormLabel
+} from '@mui/material';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Switch from '@mui/material/Switch';
 import Paper from '@mui/material/Paper';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
-
-import { GameService } from '../../service/game-service';
+import GameService from '../../service/game-service';
 import { AlertContext } from '../../manager/alert-manager';
 import { EnumAlertType } from '../../enum/main.enum';
 

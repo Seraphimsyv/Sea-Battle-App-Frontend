@@ -1,13 +1,11 @@
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
-
 import HomeIcon from '@mui/icons-material/Home';
 import SportsEsportsIcon from '@mui/icons-material/SportsEsports';
-import CableIcon from '@mui/icons-material/Cable';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
-import TuneIcon from '@mui/icons-material/Tune';
 import LogoutIcon from '@mui/icons-material/Logout';
-
+import CableIcon from '@mui/icons-material/Cable';
+import TuneIcon from '@mui/icons-material/Tune';
 import { IAsideProps } from '../../props/main.props';
 import { EnumHomeWindow } from '../../enum/main.enum';
 

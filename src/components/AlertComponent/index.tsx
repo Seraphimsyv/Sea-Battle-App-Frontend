@@ -3,7 +3,6 @@ import {
   useEffect
 } from 'react';
 import Alert from '@mui/material/Alert';
-
 import { EnumAlertType } from '../../enum/main.enum';
 import { IAlertProps } from '../../props/main.props';
 

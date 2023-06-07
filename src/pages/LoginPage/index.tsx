@@ -8,7 +8,8 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import AuthComponent from '../../components/AuthComponent';
-import { AuthService } from '../../service/auth-service';
+import AuthService from '../../service/auth-service';
+import AuthManager from '../../manager/auth-manager';
 import { AlertContext } from '../../manager/alert-manager';
 import { ILoginProps } from '../../props/auth.props';
 import { EnumAlertType } from '../../enum/main.enum';
@@ -25,41 +26,51 @@ const LoginPage = ({ handleSave }: ILoginProps) => {
    * @param evt 
    */
   const handleChangeLogin = (evt: any) : void => {
-    setLoginValid(true);
     setLogin(evt.currentTarget.value);
+    setLoginValid(true);
   }
   /**
    * User input save handler for password field
    * @param evt 
    */
   const handleChangePassword = (evt: any) : void => {
-    setPassValid(true);
     setPassword(evt.currentTarget.value);
+    setPassValid(true);
   }
   /**
    * User authorization handler
    */
   const handleAuth = () => {
-    if (login.length === 0 || password.length === 0) {
-      setLoginValid(false);
-      setPassValid(false);
-      addAlert(EnumAlertType.error, ErrorAlertText.auth.login.empty);
-      return;
-    }
-
-    AuthService.logIn({ login, password })
-    .then((token: string) => {
-      handleSave(token);
+    AuthManager.validateLog({ login, password })
+    .then(() => {
+      AuthService.logIn({ login, password })
+      .then((token: string) => {
+        handleSave(token);
+      })
+      .catch((err: string) => {
+        if (err === 'ERROR:PASSWORD') {
+          setLoginValid(true);
+          setPassValid(false);
+          addAlert(EnumAlertType.error, ErrorAlertText.auth.login.password);
+        } else {
+          setLoginValid(false);
+          setPassValid(false);
+          addAlert(EnumAlertType.error, ErrorAlertText.auth.login.invalid);
+        }
+      })
     })
-    .catch((err: string) => {
-      if (err === 'ERROR:PASSWORD') {
-        setLoginValid(true);
-        setPassValid(false);
-        addAlert(EnumAlertType.error, ErrorAlertText.auth.login.password);
-      } else {
-        setLoginValid(false);
-        setPassValid(false);
-        addAlert(EnumAlertType.error, ErrorAlertText.auth.login.invalid);
+    .catch(err => {
+      switch (err) {
+        case 'login': {
+          addAlert(EnumAlertType.error, 'Empty login');
+          setLoginValid(false);
+          break;
+        }
+        case 'password': {
+          addAlert(EnumAlertType.error, 'Empty password');
+          setPassValid(false);
+          break;
+        }
       }
     })
   }

@@ -7,9 +7,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-
-import { AccountService } from '../../service/account-service';
-
+import AccountService from '../../service/account-service';
 import {
   Profile as AccountProfile
 } from '../../types/account.types';

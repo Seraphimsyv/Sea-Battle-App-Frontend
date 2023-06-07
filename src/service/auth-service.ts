@@ -3,7 +3,7 @@ import {
   SignIn
 } from '../types/auth.types'
 
-export class AuthService {
+export default class AuthService {
   private static readonly HOST = '/api/auth';
   /**
    * 

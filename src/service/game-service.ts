@@ -1,16 +1,14 @@
 import { io, Socket } from 'socket.io-client';
 import {
-  LoadMessages,
   SendMessage,
   CheckShot,
   Connect,
   AddShip,
-  Message,
   Create,
   Check,
 } from '../types/game.types';
 
-export class GameService {
+export default class GameService {
   private static readonly HOST = '/api/game';
   /**
    * 
@@ -217,32 +215,6 @@ export class GameService {
    * 
    * @param token 
    * @param gameId 
-   */
-  static loadMessages({ token, gameId }: LoadMessages) : Promise<Message[]> {
-    return new Promise((resolve, reject) => {
-      fetch(`${this.HOST}/get-messages`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `${token}`
-        },
-        body: JSON.stringify({ gameId: gameId })
-      })
-      .then(res => res.json())
-      .then(res => {
-        if (res?.statusCode || res?.status  ) {
-          reject(res);
-        } else {
-          resolve(res);
-        }
-      })
-      .catch(err => reject(err))
-    })
-  }
-  /**
-   * 
-   * @param token 
-   * @param gameId 
    * @param message 
    * @returns 
    */
@@ -254,7 +226,7 @@ export class GameService {
           'Content-Type': 'application/json',
           Authorization: `${token}`
         },
-        body: JSON.stringify({ gameId: gameId, message: message})
+        body: JSON.stringify({ gameId: gameId, message: message })
       })
       .then(res => res.json())
       .then(res => {

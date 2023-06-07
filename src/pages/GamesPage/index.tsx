@@ -11,8 +11,7 @@ import SecurityIcon from '@mui/icons-material/Security';
 import TableComponent from "../../components/TableComponent";
 import LoaderComponent from '../../components/LoaderComponent';
 import ConnectionComponent from '../../components/ConnectionComponent';
-
-import { GameService } from '../../service/game-service';
+import GameService from '../../service/game-service';
 
 const cols: GridColDef[] = [
   {
@@ -86,7 +85,7 @@ const GamesPage = () => {
           setLoaded(true);
           setGames(data);
         });
-      }, 3000)
+      }, 0)
     }
   })
 

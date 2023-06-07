@@ -43,7 +43,6 @@ export type SendMessage = LoadMessages & {
 }
 
 export type Message = {
-  gameId: string,
   username: string,
   message: string,
 }

@@ -2,8 +2,8 @@ import { Location } from "../types/game.types";
 
 const alphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
 
-const renderingShipsLocation = (context: CanvasRenderingContext2D, location: Location, cellSize: number) => {
-  context.fillStyle = 'black';
+const renderingLocation = (context: CanvasRenderingContext2D, location: Location, color: string, cellSize: number) => {
+  context.fillStyle = color;
   context.fillRect(location.x * cellSize, location.y * cellSize, cellSize, cellSize);
 }
 
@@ -69,7 +69,7 @@ const renderingCanvasPlaground = (canvas: HTMLCanvasElement, cellSize: number) :
 }
 
 export {
-  renderingShipsLocation,
+  renderingLocation,
   renderingNavigatePositions,
   renderingCanvasPlaground,
   renderingBackground

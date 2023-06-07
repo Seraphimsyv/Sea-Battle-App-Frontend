@@ -8,7 +8,8 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import AuthComponent from '../../components/AuthComponent';
-import { AuthService } from '../../service/auth-service';
+import AuthService from '../../service/auth-service';
+import AuthManager from '../../manager/auth-manager';
 import { AlertContext } from '../../manager/alert-manager';
 import { EnumAlertType } from '../../enum/main.enum';
 import { ErrorAlertText } from '../../constants';
@@ -27,12 +28,7 @@ const SigninPage = () => {
    */
   const handleChangeUsername = (evt: any) : void => {
     setUsername(evt.currentTarget.value);
-    
-    if (username.length < 5) {
-      setNameValid(false);
-    } else {
-      setNameValid(true);
-    }
+    setNameValid(true);
   }
   /**
    * User input save handler for login field
@@ -40,12 +36,7 @@ const SigninPage = () => {
    */
   const handleChangeLogin = (evt: any) : void => {
     setLogin(evt.currentTarget.value);
-
-    if (login.length < 5) {
-      setLoginValid(false);
-    } else {
-      setLoginValid(true);
-    }
+    setLoginValid(true);
   }
   /**
    * User input save handler for password field
@@ -53,48 +44,59 @@ const SigninPage = () => {
    */
   const handleChangePassword = (evt: any) : void => {
     setPassword(evt.currentTarget.value);
-
-    if (password.length < 5) {
-      setPassValid(false);
-    } else {
-      setPassValid(true);
-    }
+    setPassValid(true);
   }
   /**
    * User registration handler
    */
   const handleRegistartion = () => {
-    if (nameValid || loginValid || passValid) {
+    if (!nameValid || !loginValid || !passValid) {
       addAlert(EnumAlertType.error, ErrorAlertText.auth.signin.validation)
       return;
     }
 
-    if (username === '' || login === '' || password === '') {
-      setLoginValid(false);
-      setNameValid(false);
-      setPassValid(false);
-      addAlert(EnumAlertType.error, ErrorAlertText.auth.signin.empty)
-      return;
-    }
-
-    AuthService.signIn({ username, login, password })
+    AuthManager.validateSign({ username, login, password })
     .then(() => {
-      window.location.href = '/log-in';
+      AuthService.signIn({ username, login, password })
+      .then(() => {
+        window.location.href = '/log-in';
+      })
+      .catch(err => {
+        if (err === 'ERROR:USER_EXISTS') {
+          setNameValid(false);
+          setLoginValid(false);
+          addAlert(EnumAlertType.error, ErrorAlertText.auth.signin.exists)
+        } else {
+          setNameValid(false);
+          setLoginValid(false);
+          setPassValid(false);
+          addAlert(EnumAlertType.error, ErrorAlertText.auth.signin.server)
+        }
+      })
     })
     .catch(err => {
-      if (err === 'ERROR:USER_EXISTS') {
-        setNameValid(false);
-        setLoginValid(false);
-        addAlert(EnumAlertType.error, ErrorAlertText.auth.signin.exists)
-      } else {
-        setNameValid(false);
-        setLoginValid(false);
-        setPassValid(false);
-        addAlert(EnumAlertType.error, ErrorAlertText.auth.signin.server)
+      switch (err) {
+        case 'username': {
+          addAlert(EnumAlertType.error, 'Empty username');
+          setNameValid(false);
+          break;
+        }
+        case 'login': {
+          addAlert(EnumAlertType.error, 'Empty login');
+          setLoginValid(false);
+          break;
+        }
+        case 'password': {
+          addAlert(EnumAlertType.error, 'Empty password');
+          setPassValid(false);
+          break;
+        }
       }
     })
   }
-
+  /**
+   * 
+   */
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Enter') {

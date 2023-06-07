@@ -1,6 +1,9 @@
-import { GameInfo } from "../types/game.types";
+import { EnumPlayerStatus } from "../enum/game.enum";
+import { GameInfo, Message } from "../types/game.types";
 
 interface IPlaygroundProps {
+  gameInfo: GameInfo;
+  playerId: number;
   canvasRef: React.RefObject<HTMLCanvasElement>;
   width: number;
   height: number;
@@ -8,8 +11,6 @@ interface IPlaygroundProps {
 }
 
 export interface IPlayerPlaygroundProps extends IPlaygroundProps {
-  gameInfo?: GameInfo;
-  playerId?: number;
   count: {
     small: {
       current: number;
@@ -57,7 +58,24 @@ export interface IShipProps {
   callbackDragEnd: () => void;
 }
 
+export interface IPlayerStatusProps {
+  status: EnumPlayerStatus;
+}
+
 export interface IInfoPanelProps {
   gameInfo: GameInfo;
-  callbackPlayerStatus: () => void;
+}
+
+export interface IChatProps {
+  gameId: string;
+  messages: Message[];
+}
+
+export interface IMessageProps {
+  username: string;
+  message: string;
+}
+
+export interface IStatProps {
+  gameInfo: GameInfo;
 }

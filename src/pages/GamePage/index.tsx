@@ -6,27 +6,41 @@ import {
 } from 'react';
 import { useParams } from 'react-router-dom';
 import { Socket } from 'socket.io-client';
+import Button from '@mui/material/Button';
 import HeaderComponent from '../../components/HeaderComponent';
 import LoaderComponent from '../../components/LoaderComponent';
-import { GameManager } from '../../manager/game-manager';
-import { GameService } from '../../service/game-service';
+import ChatComponent from '../../components/ChatComponent';
+import {
+  OpponentPlayground,
+  PlayerPlayground,
+  StatisticPanel, 
+  InfoPanel
+} from '../../components/GameComponents';
+import AccountService from '../../service/account-service';
+import GameManager from '../../manager/game-manager';
+import GameService from '../../service/game-service';
 import { AlertContext } from '../../manager/alert-manager';
 import { EnumAlertType } from '../../enum/main.enum';
 import {
+  EnumPlayerStatus,
   EnumGameStatus
 } from '../../enum/game.enum';
-import { Location, GameInfo } from '../../types/game.types';
-import { InfoPanel, PlayerPlayground, OpponentPlayground } from '../../components/GameComponents';
-import { AccountService } from '../../service/account-service';
+import {
+  Location,
+  GameInfo,
+  Message
+} from '../../types/game.types';
 
-const CELL_SIZE = 30;
-const CANVAS_SIZE = 330;
+const CELL_SIZE = 25;
+const CANVAS_SIZE = 275;
 
 const GamePage = () => {
   // Player
   const [playerId, setPlayerId] = useState<number | undefined>(undefined);
   // Game
 
+  // Chat
+  const [messages, setMessages] = useState<Message[]>([]);
 
   const { addAlert } = useContext(AlertContext);
   const { gameId } = useParams();
@@ -41,9 +55,10 @@ const GamePage = () => {
   // Ships
   const [smallCount, setSmallCount] = useState(3);
   const [mediumCount, setMediumCount] = useState(2);
-  const [largeCount, setLargeCount] = useState(1);
-
-  
+  const [largeCount, setLargeCount] = useState(1); 
+  /**
+   * 
+   */
   const SHIP_COUNT = {
     small: {
       current: smallCount,
@@ -58,7 +73,9 @@ const GamePage = () => {
       default: 3,
     },
   }
-
+  /**
+   * 
+   */
   useEffect(() => {
     const token = window.localStorage.getItem('token');
 
@@ -67,7 +84,9 @@ const GamePage = () => {
     AccountService.loadProfile(token)
     .then(res => setPlayerId(res.id))
   }, [])
-
+  /**
+   * 
+   */
   useEffect(() => {
     const token = window.localStorage.getItem('token');
 
@@ -78,6 +97,7 @@ const GamePage = () => {
 
           const sock = GameService.getSocket(token);
           sock.emit('joinGame', { gameId, playerId });
+          sock.emit('joinChat', { gameId });
           setSocket(sock)
           setLoaded(true);
         })
@@ -87,19 +107,26 @@ const GamePage = () => {
         });
       }, 0)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [gameId, playerId])
-
+  }, [addAlert, gameId, playerId])
+  /**
+   * 
+   */
   useEffect(() => {
     if (socket) {
       socket.on('gameInfo', (evt) => {
         setGameInfo(evt);
       })
+      socket.on('updateChat', (evt) => {
+        setMessages(evt.messages);
+      })
     }
 
   }, [gameId, socket])
-
-
+  /**
+   * 
+   * @param evt 
+   * @returns 
+   */
   const handleRemoveShip = (evt: React.MouseEvent<HTMLCanvasElement>) => {
     evt.preventDefault();
 
@@ -136,7 +163,12 @@ const GamePage = () => {
       };
     })
   }
-  
+  /**
+   * 
+   * @param shipSize 
+   * @param evt 
+   * @returns 
+   */
   const handleDragStart = (shipSize: number, evt: React.DragEvent<HTMLDivElement>) : void => {
     if (!gameInfo) return;
 
@@ -155,25 +187,41 @@ const GamePage = () => {
     setIsDragging(true);
     setDraggedElement(target)
   }
-
+  /**
+   * 
+   * @param evt 
+   */
   const handleDragEnd = () => {
     setIsDragging(false);
     setDraggedElement(null);
   }
-
+  /**
+   * 
+   * @param evt 
+   */
   const handleDragEnter = (evt: React.DragEvent<HTMLCanvasElement>) => {
     const target = evt.target as HTMLDivElement;
     evt.dataTransfer?.setData("text/plain", target.id);
   }
-
+  /**
+   * 
+   * @param evt 
+   */
   const handleDragOver = (evt: React.DragEvent<HTMLCanvasElement>) => {
     evt.preventDefault();
   }
-
+  /**
+   * 
+   * @param evt 
+   */
   const handleDragLeave = (evt: React.DragEvent<HTMLCanvasElement>) => {
     evt.preventDefault();
   }
-
+  /**
+   * 
+   * @param evt 
+   * @returns 
+   */
   const handleDragDrop = (evt: React.DragEvent<HTMLCanvasElement>) => {
     evt.preventDefault();
 
@@ -231,7 +279,11 @@ const GamePage = () => {
       }
     }
   }
-
+  /**
+   * 
+   * @param evt 
+   * @returns 
+   */
   const handleOnClick = (evt: React.MouseEvent<HTMLCanvasElement>) => {
     if (gameInfo && gameInfo.info.status !== EnumGameStatus.InGame) return;
 
@@ -255,9 +307,14 @@ const GamePage = () => {
       .catch(err => addAlert(EnumAlertType.error, err.message));
     }
   }
-
+  /**
+   * 
+   * @returns 
+   */
   const handleSetReady = () => {
     const token = window.localStorage.getItem('token');
+
+    if (gameInfo && gameInfo.info.status !== EnumGameStatus.Preparation) return;
 
     if (token && gameId && playerId) {
       const ships = GameManager.ships;
@@ -291,55 +348,102 @@ const GamePage = () => {
             }}
           >
             <div
-              id="playgrounds"
               style={{
+                width: '60%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between'
+              }}
+            >
+              {gameInfo && (
+                <InfoPanel
+                  gameInfo={gameInfo}
+                />
+              )}
+              <div
+                id="playgrounds"
+                style={{
+                  height: '80%',
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-around'
+                }}
+              >
+                {gameInfo && playerId && gameInfo.info.status !== EnumGameStatus.Waiting ? (
+                  <>
+                    <PlayerPlayground
+                      gameInfo={gameInfo}
+                      playerId={playerId}
+                      count={SHIP_COUNT}
+                      canvasRef={playerCanvasRef}
+                      width={CANVAS_SIZE}
+                      height={CANVAS_SIZE}
+                      cellSize={CELL_SIZE}
+                      callbackContextMenu={handleRemoveShip}
+                      callbackDragEnter={handleDragEnter}
+                      callbackDragOver={handleDragOver}
+                      callbackDragLeave={handleDragLeave}
+                      callbackOnDrop={handleDragDrop}
+                      callbackDragStart={handleDragStart}
+                      callbackDragEnd={handleDragEnd}
+                    />
+                    {gameInfo 
+                    && gameInfo.info.status === EnumGameStatus.Preparation 
+                    && gameInfo.players[playerId].status === EnumPlayerStatus.Preparation && (
+                      <div
+                        style={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <Button
+                          variant='contained'
+                          onClick={handleSetReady}
+                        >
+                          Ready
+                        </Button>
+                      </div>
+                    )}
+                    <OpponentPlayground
+                      gameInfo={gameInfo}
+                      playerId={playerId}
+                      canvasRef={opponentCanvasRef}
+                      width={CANVAS_SIZE}
+                      height={CANVAS_SIZE}
+                      cellSize={CELL_SIZE}
+                      onClick={handleOnClick}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <LoaderComponent active>
+                      Waiting for an opponent
+                    </LoaderComponent>
+                  </>
+                )}
+              </div>
+            </div>
+            <div
+              style={{
+                width: '40%',
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-around'
               }}
             >
-              <PlayerPlayground
-                gameInfo={gameInfo}
-                playerId={playerId}
-                count={SHIP_COUNT}
-                canvasRef={playerCanvasRef}
-                width={CANVAS_SIZE}
-                height={CANVAS_SIZE}
-                cellSize={CELL_SIZE}
-                callbackContextMenu={handleRemoveShip}
-                callbackDragEnter={handleDragEnter}
-                callbackDragOver={handleDragOver}
-                callbackDragLeave={handleDragLeave}
-                callbackOnDrop={handleDragDrop}
-                callbackDragStart={handleDragStart}
-                callbackDragEnd={handleDragEnd}
-              />
-              {gameInfo && gameInfo.info.status !== EnumGameStatus.Waiting ? (
+              {socket && gameId && gameInfo && playerId && (
                 <>
-                  <OpponentPlayground
-                    canvasRef={opponentCanvasRef}
-                    width={CANVAS_SIZE}
-                    height={CANVAS_SIZE}
-                    cellSize={CELL_SIZE}
-                    onClick={handleOnClick}
+                  <StatisticPanel
+                    gameInfo={gameInfo}
                   />
-                </>
-              ) : (
-                <>
-                  <LoaderComponent active>
-                    Waiting for an opponent
-                  </LoaderComponent>
+                  <ChatComponent
+                    gameId={gameId}
+                    messages={messages}
+                  />
                 </>
               )}
             </div>
-            {gameInfo && (
-              <>
-                <InfoPanel
-                  gameInfo={gameInfo}
-                  callbackPlayerStatus={handleSetReady}
-                />
-              </>
-            )}
           </div>
         </>
       ) : (

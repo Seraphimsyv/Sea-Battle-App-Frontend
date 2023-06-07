@@ -1,21 +1,51 @@
-export class AuthManager {
+interface ILogIn {
+  login: string;
+  password: string;
+}
+
+interface ISignUp extends ILogIn {
+  username: string;
+}
+
+export default class AuthManager {
   /**
    * 
+   * @param param0 
    * @returns 
    */
-  static validateAuth() : Promise<boolean> {
-    const token = window.localStorage.getItem('token');
-
+  static validateLog({ login, password }: ILogIn) : Promise<string | true> {
     return new Promise((resolve, reject) => {
-      const path = window.location.pathname;
-      
-      if (token) {
-        if (['/log-in', '/sign-in'].includes(path)) {
-          resolve(true);
-        }
-      } else {
-        reject(false);
+      if (login === '') {
+        reject('login')
       }
+
+      if (password === '') {
+        reject('password');
+      }
+
+      resolve(true);
+    })
+  }
+  /**
+   * 
+   * @param param0 
+   * @returns 
+   */
+  static validateSign({ username, login, password }: ISignUp) : Promise<string | true> {
+    return new Promise((resolve, reject) => {
+      if (username === '') {
+        reject('username');
+      }
+
+      if (login === '') {
+        reject('login');
+      }
+
+      if (password === '') {
+        reject('password');
+      }
+
+      resolve(true);
     })
   }
 }

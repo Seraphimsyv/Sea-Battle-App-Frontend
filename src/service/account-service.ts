@@ -4,7 +4,7 @@ import {
   History,
 } from '../types/account.types'
 
-export class AccountService {
+export default class AccountService {
   private static readonly HOST = '/api/account';
   /**
    * 

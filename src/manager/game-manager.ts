@@ -1,7 +1,7 @@
 import { EnumShipStatus } from "../enum/game.enum";
 import { Location, Ship } from "../types/game.types";
 
-export class GameManager {
+export default class GameManager {
   public static readonly ships : Ship[] = [];
 
   static validateCells(oldLoc: Location, newLoc: Location) {
