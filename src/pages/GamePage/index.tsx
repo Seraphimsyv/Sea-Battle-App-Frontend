@@ -432,10 +432,11 @@ const GamePage = () => {
                 justifyContent: 'space-around'
               }}
             >
-              {socket && gameId && gameInfo && playerId && (
+              {gameId && gameInfo && playerId && (
                 <>
                   <StatisticPanel
                     gameInfo={gameInfo}
+                    playerId={playerId}
                   />
                   <ChatComponent
                     gameId={gameId}

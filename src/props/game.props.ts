@@ -78,4 +78,5 @@ export interface IMessageProps {
 
 export interface IStatProps {
   gameInfo: GameInfo;
+  playerId: number;
 }
