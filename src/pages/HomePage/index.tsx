@@ -9,7 +9,7 @@ import StatisticPage from '../StatisticPage';
 import { EnumHomeWindow } from '../../enum/main.enum';
 
 const HomePage = () => {
-  const [currentWindow, setWindow] = useState(EnumHomeWindow.Default);
+  const [currentWindow, setWindow] = useState(EnumHomeWindow.Creation);
 
   return (
     <>
@@ -45,11 +45,7 @@ const HomePage = () => {
             width: '100%'
           }}
         >
-          {currentWindow === EnumHomeWindow.Default ? (
-            <>
-              Default
-            </>
-          ) : currentWindow === EnumHomeWindow.Creation ? (
+          {currentWindow === EnumHomeWindow.Creation ? (
             <>
               <CreatePage />
             </>
@@ -61,8 +57,6 @@ const HomePage = () => {
             <>
               <StatisticPage />
             </>
-          ) : currentWindow === EnumHomeWindow.Settings ? (
-            <>Settings</>
           ) : (
             <>Default</>
           )}

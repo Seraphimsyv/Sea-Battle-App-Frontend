@@ -3,5 +3,5 @@ export enum EnumAlertType {
 }
 
 export enum EnumHomeWindow {
-  Default, Creation, GameList, Statistic, Settings
+  Creation, GameList, Statistic
 }

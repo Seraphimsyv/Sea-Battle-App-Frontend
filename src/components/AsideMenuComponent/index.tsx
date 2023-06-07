@@ -17,13 +17,6 @@ const AsideMenuComponent = (props: IAsideProps) => {
         spacing={2}
       >
         <Button 
-          variant={props.currentWindow === EnumHomeWindow.Default ? "contained" : "outlined"}
-          startIcon={<HomeIcon />}
-          onClick={() => props.callbackChangeWindow(EnumHomeWindow.Default)}
-        > 
-          Home
-        </Button>
-        <Button 
           variant={props.currentWindow === EnumHomeWindow.Creation ? "contained" : "outlined"}
           startIcon={<SportsEsportsIcon />}
           onClick={() => props.callbackChangeWindow(EnumHomeWindow.Creation)}
@@ -43,13 +36,6 @@ const AsideMenuComponent = (props: IAsideProps) => {
           onClick={() => props.callbackChangeWindow(EnumHomeWindow.Statistic)}
         >
           Statistic board
-        </Button>
-        <Button
-          variant={props.currentWindow === EnumHomeWindow.Settings ? "contained" : "outlined"}
-          startIcon={<TuneIcon />}
-          onClick={() => props.callbackChangeWindow(EnumHomeWindow.Settings)}
-        >
-          Settings
         </Button>
         <Button 
           variant='outlined'
