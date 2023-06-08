@@ -83,6 +83,7 @@ type History = {
 const StatisticPage = () => {
   const [statistic, setStatistic] = useState<Statistic | undefined>(undefined);
   const [history, setHistory] = useState<History[]>([]);
+  const [loaded, setLoaded] = useState<boolean>(false);
 
   useEffect(() => {
     const token = window.localStorage.getItem('token');
@@ -90,9 +91,14 @@ const StatisticPage = () => {
     if (!token) return;
 
     AccountService.loadStatistic(token)
-    .then((res: Statistic) => setStatistic(res));
-    AccountService.loadHistory(token)
-    .then((res: History[]) => setHistory(res));
+    .then((statistic: Statistic) => {
+      AccountService.loadHistory(token)
+      .then((history: History[]) => {
+        setStatistic(statistic);
+        setHistory(history);
+        setLoaded(true);
+      });
+    });
   })
 
   return (
@@ -124,7 +130,7 @@ const StatisticPage = () => {
           </Stack>
         </Box>
       )}
-      {history.length > 0 ? (
+      {loaded ? (
         <>
           <TableComponent
             rows={history}
