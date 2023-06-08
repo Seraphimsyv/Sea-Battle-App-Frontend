@@ -88,7 +88,11 @@ const CreatePage = () => {
         GameService.create({ token, body })
         .then(gameId => {
           GameService.connect({ token, gameId: gameId })
-          .then(() => window.location.href = `/game/${gameId}`)
+          .then(() => {
+            setName('');
+            setPassword('');
+            window.location.href = `/game/${gameId}`;
+          })
           .catch(err => addAlert(EnumAlertType.error, err.message))
         })
         .catch(err => addAlert(EnumAlertType.error, `Error create: ${err}`))
@@ -141,6 +145,7 @@ const CreatePage = () => {
                   <TextField
                     label="Name"
                     variant="standard"
+                    value={name}
                     error={!nameValid}
                     onChange={handleChangeName}
                   />
@@ -177,6 +182,7 @@ const CreatePage = () => {
                       <TextField
                         label='Password'
                         variant="standard"
+                        value={password}
                         error={!passValid}
                         onChange={handleChangePassword}
                       />

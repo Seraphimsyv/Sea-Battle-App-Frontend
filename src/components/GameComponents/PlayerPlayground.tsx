@@ -122,6 +122,7 @@ const PlayerPlayground = (props: IProps) => {
             ref={props.canvasRef}
             width={props.width}
             height={props.height}
+            onClick={props.callbackOnClick}
             onContextMenu={props.callbackContextMenu}
             onDragEnter={props.callbackDragEnter}
             onDragOver={props.callbackDragOver}

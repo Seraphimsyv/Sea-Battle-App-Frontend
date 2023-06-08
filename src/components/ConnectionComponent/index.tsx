@@ -35,7 +35,10 @@ const ConnectionComponent = ({ params }: IBtnConnectProps) => {
 
     if (token) {
       GameService.connect({ token, gameId, password })
-      .then(() => window.location.href = `/game/${gameId}`)
+      .then(() => {
+        setPass('');
+        window.location.href = `/game/${gameId}`;
+      })
       .catch(err => addAlert(EnumAlertType.warning, err.message));
     } else {
       window.localStorage.clear();
@@ -48,7 +51,7 @@ const ConnectionComponent = ({ params }: IBtnConnectProps) => {
       {params.row.privacy ? (
         <>
           <div style={{ display: 'flex', flexDirection: 'row'}}>
-            <TextField label='Password' variant='filled' onChange={handleChange}/>
+            <TextField label='Password' variant='filled' value={inPass} onChange={handleChange}/>
             <Button variant='contained' onClick={handleConnect}>
               Connect
             </Button>

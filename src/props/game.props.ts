@@ -25,6 +25,7 @@ export interface IPlayerPlaygroundProps extends IPlaygroundProps {
       default: number;
     },
   };
+  callbackOnClick: (evt: React.MouseEvent<HTMLCanvasElement>) => void;
   callbackContextMenu: (evt: React.MouseEvent<HTMLCanvasElement>) => void;
   callbackDragEnter: (evt: React.DragEvent<HTMLCanvasElement>) => void;
   callbackDragOver: (evt: React.DragEvent<HTMLCanvasElement>) => void;

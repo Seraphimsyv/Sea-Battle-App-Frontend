@@ -125,6 +125,30 @@ const GamePage = () => {
   /**
    * 
    * @param evt 
+   */
+  const handleRotateShip = (evt: React.MouseEvent<HTMLCanvasElement>) => {
+    evt.preventDefault();
+
+    if (!gameInfo) return;
+
+    if (gameInfo.info.status !== EnumGameStatus.Preparation) return;
+
+    const canvas = playerCanvasRef.current;
+
+    if (!canvas) return;
+
+    const rect = canvas.getBoundingClientRect();
+    const offsetX = evt.clientX - rect.left;
+    const offsetY = evt.clientY - rect.top;
+    const col = Math.floor(offsetX / CELL_SIZE);
+    const row = Math.floor(offsetY / CELL_SIZE);
+    
+    GameManager.rotate({ x: col, y: row })
+    .then(res => addAlert(EnumAlertType.success, `The ship changed position to ${res}`));
+  }
+  /**
+   * 
+   * @param evt 
    * @returns 
    */
   const handleRemoveShip = (evt: React.MouseEvent<HTMLCanvasElement>) => {
@@ -141,7 +165,6 @@ const GamePage = () => {
     const rect = canvas.getBoundingClientRect();
     const offsetX = evt.clientX - rect.left;
     const offsetY = evt.clientY - rect.top;
-
     const col = Math.floor(offsetX / CELL_SIZE);
     const row = Math.floor(offsetY / CELL_SIZE);
 
@@ -262,7 +285,7 @@ const GamePage = () => {
         }
 
         GameManager.add(locations, size)
-        .then(() => {
+        .then((res) => {
           switch (size) {
             case 1: 
               setSmallCount(smallCount - 1);
@@ -379,6 +402,7 @@ const GamePage = () => {
                       width={CANVAS_SIZE}
                       height={CANVAS_SIZE}
                       cellSize={CELL_SIZE}
+                      callbackOnClick={handleRotateShip}
                       callbackContextMenu={handleRemoveShip}
                       callbackDragEnter={handleDragEnter}
                       callbackDragOver={handleDragOver}

@@ -9,13 +9,14 @@ const TableComponent = ({ rows, columns, pageSize }: ITableProps) => {
       <Box
         sx={{
           width: '90%',
+          height: '100%',
           margin: 'auto',
           marginTop: '1em'
         }}
       >
         <DataGrid
           sx={{
-            minHeight: '85vh'
+            minHeight: '65vh'
           }}
           rows={rows}
           columns={columns}

@@ -5,6 +5,9 @@ import {
 import {
   GridColDef,
 } from '@mui/x-data-grid';
+import Stack from '@mui/material/Stack';
+import Chip from '@mui/material/Chip';
+import Box from '@mui/material/Box';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import DoDisturbIcon from '@mui/icons-material/DoDisturb';
 import TableComponent from "../../components/TableComponent";
@@ -58,6 +61,15 @@ const cols: GridColDef[] = [
   }
 ];
 
+type Statistic = {
+  points: number,
+  games: {
+    total: number,
+    wone: number,
+    lose: number,
+  }
+}
+
 type History = {
   createdAt: Date,
   finishAt: Date,
@@ -69,6 +81,7 @@ type History = {
 }
 
 const StatisticPage = () => {
+  const [statistic, setStatistic] = useState<Statistic | undefined>(undefined);
   const [history, setHistory] = useState<History[]>([]);
 
   useEffect(() => {
@@ -76,12 +89,41 @@ const StatisticPage = () => {
 
     if (!token) return;
 
+    AccountService.loadStatistic(token)
+    .then((res: Statistic) => setStatistic(res));
     AccountService.loadHistory(token)
-    .then(res => setHistory(res))
+    .then((res: History[]) => setHistory(res));
   })
 
   return (
     <>
+      {statistic && (
+        <Box
+          sx={{
+            height: '10%',
+            margin: 'auto',
+            padding: '1em',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center'
+          }}
+        >
+          <Stack direction='row' spacing={3}>
+            <Chip
+              label={`Total points: ${statistic.points}`}
+            />
+            <Chip
+              label={`Total games: ${statistic.games.total}`}
+            />
+            <Chip
+              label={`Wone games: ${statistic.games.wone}`}
+            />
+            <Chip
+              label={`Lose games: ${statistic.games.lose}`}
+            />
+          </Stack>
+        </Box>
+      )}
       {history.length > 0 ? (
         <>
           <TableComponent
